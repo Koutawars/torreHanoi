@@ -3,28 +3,48 @@
 #include "pch.h"
 #include <iostream>
 #include "Pila.h"
+void hanoi(int Fichas, Pila* torre1, Pila* torre2, Pila* torre3);
 
 int main()
 {
-	Pila *ptr = new Pila();
+	Pila *ptr = new Pila("inicial");
+	ptr->apilar(4);
 	ptr->apilar(3);
 	ptr->apilar(2);
 	ptr->apilar(1);
-	ptr->apilar(3);
-	Pila* ptr1 = new Pila();
-	Pila* ptr2 = new Pila();
+	Pila* ptr1 = new Pila("intermedia");
+	Pila* ptr2 = new Pila("final");
+	int tamano = ptr->lista.size();
+	hanoi(tamano, ptr, ptr1, ptr2);
 	for (int i = 0; i < ptr->lista.size(); i++)
 	{
-		std::cout << "dato :" <<ptr->lista[i] << std::endl;
+		std::cout << "torre 1 :" << ptr->lista[i] << std::endl;
 	}
-	ptr->desapilar();
-	for (int i = 0; i < ptr->lista.size(); i++)
+	for (int i = 0; i < ptr1->lista.size(); i++)
 	{
-		std::cout << "-dato :" << ptr->lista[i] << std::endl;
+		std::cout << "torre 2 :" << ptr1->lista[i] << std::endl;
 	}
-		
+	for (int i = 0; i < ptr2->lista.size(); i++)
+	{
+		std::cout << "torre 3 :" << ptr2->lista[i] << std::endl;
+	}
 
 
+}
+void hanoi(int Fichas, Pila* torre1, Pila* torre2, Pila* torre3) {
+	int num_movimientos = 0;
+	if (Fichas == 1) {
+		std::cout << "mover el dico de " << torre1->nombre << " a " << torre3->nombre << std::endl;
+		torre3->apilar(torre1->desapilar());
+		num_movimientos++;
+	}
+	else {
+		hanoi(Fichas - 1, torre1, torre3, torre2);
+		std::cout << "mover el dico de " << torre1->nombre << " a " << torre3->nombre << std::endl;
+		torre3->apilar(torre1->desapilar());
+		hanoi(Fichas - 1, torre2, torre1, torre3);
+	}
+	
 }
 
 // Ejecutar programa: Ctrl + F5 o menú Depurar > Iniciar sin depurar
