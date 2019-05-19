@@ -1,12 +1,30 @@
 // torreHanoi.cpp : Este archivo contiene la función "main". La ejecución del programa comienza y termina ahí.
 //
-
 #include "pch.h"
 #include <iostream>
+#include "Pila.h"
 
 int main()
 {
-    std::cout << "Hello World!\n"; 
+	Pila *ptr = new Pila();
+	ptr->apilar(3);
+	ptr->apilar(2);
+	ptr->apilar(1);
+	ptr->apilar(3);
+	Pila* ptr1 = new Pila();
+	Pila* ptr2 = new Pila();
+	for (int i = 0; i < ptr->lista.size(); i++)
+	{
+		std::cout << "dato :" <<ptr->lista[i] << std::endl;
+	}
+	ptr->desapilar();
+	for (int i = 0; i < ptr->lista.size(); i++)
+	{
+		std::cout << "-dato :" << ptr->lista[i] << std::endl;
+	}
+		
+
+
 }
 
 // Ejecutar programa: Ctrl + F5 o menú Depurar > Iniciar sin depurar
