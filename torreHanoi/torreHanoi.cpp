@@ -31,7 +31,6 @@ int main()
 	al_init_font_addon();
 	al_init_ttf_addon();
 
-	Juego::GetInstance().config();
 	Juego::GetInstance().initialize();
 	Juego::GetInstance().loadContent();
 
