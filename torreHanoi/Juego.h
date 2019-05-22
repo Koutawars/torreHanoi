@@ -36,7 +36,7 @@ public:
 	screen pantalla = MENU;
 	bool dibujar;
 	void cambiarPantalla(screen pantalla);
-	void config();
+
 	Juego();
 	~Juego();
 };
