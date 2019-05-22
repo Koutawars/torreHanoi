@@ -15,27 +15,33 @@
 #include <math.h>
 #include <windows.h>
 #include <utility>
+#include "Pila.h"
 
 #pragma once
 
-enum screen {
-	MENU,
-	GAMEPLAY,
-	ABOUT
-};
 
 class Juego
 {
 public:
+	Pila* inicial = new Pila("inicial");
+	Pila* intermedia = new Pila("intermedia");
+	Pila* final = new Pila("final");
 	static Juego & GetInstance();
 	void initialize();
 	void loadContent();
+	std::vector < std::string > menu;
 	void unloadContent();
 	void update(ALLEGRO_EVENT ev, bool* done);
 	void draw(ALLEGRO_DISPLAY* display);
-	screen pantalla = MENU;
-	bool dibujar;
-	void cambiarPantalla(screen pantalla);
+	int pantalla = 0;
+	bool dibujar = true;
+	void cambiarPantalla(int pantalla);
+
+	ALLEGRO_FONT* fuente;
+	float posXMenu; // posición X del menu
+	float posYMenu; // posición Y del menu
+	float separador; // separador entre texto
+	int select; // Para guardar a quien esta colocando el mouse encima del menu
 
 	Juego();
 	~Juego();

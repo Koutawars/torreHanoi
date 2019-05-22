@@ -42,7 +42,7 @@ int main()
 	al_register_event_source(event_queue, al_get_display_event_source(display));
 	al_register_event_source(event_queue, al_get_mouse_event_source());
 
-	al_set_window_title(display, "Rompecabezas");
+	al_set_window_title(display, "Torres de Hanoi");
 
 	bool done = false;
 	al_start_timer(timer);
