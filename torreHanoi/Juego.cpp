@@ -70,6 +70,9 @@ void Juego::initialize() {
 		select = -1;
 
 		break;
+	case 3:
+		select = -1;
+		break;
 	}
 }
 
@@ -84,6 +87,9 @@ void Juego::loadContent() {
 		resultado();
 		fuente = al_load_font("Aluria.ttf", 46, NULL);
 		tablero = al_load_bitmap("tablero.png");
+		break;
+	case 3:
+		fuente = al_load_font("Aluria.ttf", 46, NULL);
 		break;
 	}
 
@@ -102,6 +108,9 @@ void Juego::unloadContent() {
 		al_destroy_bitmap(tablero);
 		resultadoHanoi.clear();
 		break;
+	case 3:
+		al_destroy_font(fuente);
+		break;
 	}
 
 }
@@ -119,7 +128,7 @@ void Juego::update(ALLEGRO_EVENT ev, bool* done) {
 					if (posicionTexto < mouseY && posicionTexto + separador > mouseY) {
 						switch (i) {
 						case 0:
-							cambiarPantalla(1);
+							cambiarPantalla(3);
 							break;
 						case 2:
 							*done = true;
@@ -155,15 +164,15 @@ void Juego::update(ALLEGRO_EVENT ev, bool* done) {
 				float mouseX = ev.mouse.x;
 				// 234 de largo
 				// 79 de angosto
-				if (mouseY > 30 && mouseY<70  && mouseX > 550) {
+				if (mouseY > 30 && mouseY < 70 && mouseX > 550) {
 					cambiarPantalla(0);
 					dibujar = true;
 					break;
 				}
-				if (posTorreInicial.first - 76 < mouseX &&  posTorreInicial.first + 76 > mouseX && posTorreInicial.second > mouseY && posTorreInicial.second  - 234 < mouseY) {
+				if (posTorreInicial.first - 76 < mouseX && posTorreInicial.first + 76 > mouseX && posTorreInicial.second > mouseY && posTorreInicial.second - 234 < mouseY) {
 					dibujar = true;
 					int disco;
-					if(select == -1 || select == 0) select = 0;
+					if (select == -1 || select == 0) select = 0;
 					else {
 						switch (select) {
 						case 1:
@@ -173,9 +182,9 @@ void Juego::update(ALLEGRO_EVENT ev, bool* done) {
 									this->intermedia->apilar(disco);
 								}
 								else {
-									if(pasos < resultadoHanoi.size())
-									if (this->resultadoHanoi[pasos].first->nombre != intermedia->nombre || this->resultadoHanoi[pasos].second->nombre != inicial->nombre) sigue = false;
-									if(sigue) pasos++;
+									if (pasos < resultadoHanoi.size())
+										if (this->resultadoHanoi[pasos].first->nombre != intermedia->nombre || this->resultadoHanoi[pasos].second->nombre != inicial->nombre) sigue = false;
+									if (sigue) pasos++;
 								}
 							}
 							break;
@@ -187,7 +196,7 @@ void Juego::update(ALLEGRO_EVENT ev, bool* done) {
 								}
 								else {
 									if (pasos < resultadoHanoi.size())
-									if (this->resultadoHanoi[pasos].first->nombre != final->nombre || this->resultadoHanoi[pasos].second->nombre != inicial->nombre) sigue = false;
+										if (this->resultadoHanoi[pasos].first->nombre != final->nombre || this->resultadoHanoi[pasos].second->nombre != inicial->nombre) sigue = false;
 									if (sigue) pasos++;
 								}
 							}
@@ -196,7 +205,7 @@ void Juego::update(ALLEGRO_EVENT ev, bool* done) {
 						select = -1;
 					}
 				}
-				if (posTorreInter.first - 76 < mouseX &&  posTorreInter.first + 76 > mouseX && posTorreInter.second > mouseY && posTorreInter.second - 234 < mouseY) {
+				if (posTorreInter.first - 76 < mouseX && posTorreInter.first + 76 > mouseX && posTorreInter.second > mouseY && posTorreInter.second - 234 < mouseY) {
 					dibujar = true;
 					int disco;
 					if (select == -1 || select == 1) {
@@ -212,7 +221,7 @@ void Juego::update(ALLEGRO_EVENT ev, bool* done) {
 								}
 								else {
 									if (pasos < resultadoHanoi.size())
-									if (this->resultadoHanoi[pasos].first->nombre != inicial->nombre || this->resultadoHanoi[pasos].second->nombre != intermedia->nombre) sigue = false;
+										if (this->resultadoHanoi[pasos].first->nombre != inicial->nombre || this->resultadoHanoi[pasos].second->nombre != intermedia->nombre) sigue = false;
 									if (sigue) pasos++;
 								}
 							}
@@ -225,7 +234,7 @@ void Juego::update(ALLEGRO_EVENT ev, bool* done) {
 								}
 								else {
 									if (pasos < resultadoHanoi.size())
-									if (this->resultadoHanoi[pasos].first->nombre != final->nombre || this->resultadoHanoi[pasos].second->nombre != intermedia->nombre) sigue = false;
+										if (this->resultadoHanoi[pasos].first->nombre != final->nombre || this->resultadoHanoi[pasos].second->nombre != intermedia->nombre) sigue = false;
 									if (sigue) pasos++;
 								}
 							}
@@ -234,21 +243,21 @@ void Juego::update(ALLEGRO_EVENT ev, bool* done) {
 						select = -1;
 					}
 				}
-				if (posTorreFinal.first - 76 < mouseX &&  posTorreFinal.first + 76 > mouseX && posTorreFinal.second > mouseY && posTorreFinal.second - 234 < mouseY) {
+				if (posTorreFinal.first - 76 < mouseX && posTorreFinal.first + 76 > mouseX && posTorreFinal.second > mouseY && posTorreFinal.second - 234 < mouseY) {
 					dibujar = true;
 					int disco;
 					if (select == -1 || select == 2) select = 2;
 					else {
 						switch (select) {
 						case 0:
-							if (this->inicial->lista.size() >0) {
+							if (this->inicial->lista.size() > 0) {
 								disco = this->inicial->desapilar();
 								if (!this->final->apilar(disco)) {
 									this->inicial->apilar(disco);
 								}
 								else {
 									if (pasos < resultadoHanoi.size())
-									if (this->resultadoHanoi[pasos].first->nombre != inicial->nombre || this->resultadoHanoi[pasos].second->nombre != final->nombre) sigue = false;
+										if (this->resultadoHanoi[pasos].first->nombre != inicial->nombre || this->resultadoHanoi[pasos].second->nombre != final->nombre) sigue = false;
 									if (sigue) pasos++;
 								}
 							}
@@ -261,7 +270,7 @@ void Juego::update(ALLEGRO_EVENT ev, bool* done) {
 								}
 								else {
 									if (pasos < resultadoHanoi.size())
-									if (this->resultadoHanoi[pasos].first->nombre != intermedia->nombre || this->resultadoHanoi[pasos].second->nombre != final->nombre) sigue = false;
+										if (this->resultadoHanoi[pasos].first->nombre != intermedia->nombre || this->resultadoHanoi[pasos].second->nombre != final->nombre) sigue = false;
 									if (sigue) pasos++;
 								}
 							}
@@ -273,6 +282,21 @@ void Juego::update(ALLEGRO_EVENT ev, bool* done) {
 			}
 		}
 		break;
+	case 3:
+		if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
+			switch (ev.keyboard.keycode) {
+
+			case ALLEGRO_KEY_S:
+				ayuda = true;
+				cambiarPantalla(1);
+				break;
+			case ALLEGRO_KEY_N:
+				ayuda = false;
+				cambiarPantalla(1);
+				break;
+			}
+			break;
+		}
 	}
 
 }
@@ -283,22 +307,22 @@ void Juego::draw(ALLEGRO_DISPLAY* display) {
 		for (int i = 0; i < menu.size(); i++) {
 
 			al_draw_text(fuente, al_map_rgb(219, 90, 48), posXMenu, (i * separador) + posYMenu, NULL, menu[i].c_str());
-			
+
 		}
 		break;
 	case 1:
 		al_draw_bitmap(tablero, 0, 0, NULL);
 		for (int i = 0; i < this->inicial->lista.size(); i++) {
-			al_draw_filled_rectangle(posTorreInicial.first + 10 * this->inicial->lista[i], posTorreInicial.second - 10 * i, posTorreInicial.first + 20 + 10* this->inicial->lista[i], posTorreInicial.second - 10 - 10 * i, al_map_rgb(this->inicial->lista[i]*30, 0, 0));
-			al_draw_filled_rectangle(posTorreInicial.first + 10 * this->inicial->lista[i], posTorreInicial.second - 10 * i, posTorreInicial.first - 20 - 10* this->inicial->lista[i], posTorreInicial.second - 10 - 10 * i, al_map_rgb(this->inicial->lista[i]*30, 0, 0));
+			al_draw_filled_rectangle(posTorreInicial.first + 10 * this->inicial->lista[i], posTorreInicial.second - 10 * i, posTorreInicial.first + 20 + 10 * this->inicial->lista[i], posTorreInicial.second - 10 - 10 * i, al_map_rgb(this->inicial->lista[i] * 30, 0, 0));
+			al_draw_filled_rectangle(posTorreInicial.first + 10 * this->inicial->lista[i], posTorreInicial.second - 10 * i, posTorreInicial.first - 20 - 10 * this->inicial->lista[i], posTorreInicial.second - 10 - 10 * i, al_map_rgb(this->inicial->lista[i] * 30, 0, 0));
 		}
 		for (int i = 0; i < this->intermedia->lista.size(); i++) {
-			al_draw_filled_rectangle(posTorreInter.first + 10 * this->intermedia->lista[i], posTorreInter.second - 10 * i, posTorreInter.first + 20 + 10 * this->intermedia->lista[i], posTorreInter.second - 10 - 10 * i, al_map_rgb(this->intermedia->lista[i]*30, 0, 0));
-			al_draw_filled_rectangle(posTorreInter.first + 10 * this->intermedia->lista[i], posTorreInter.second - 10 * i, posTorreInter.first - 20 - 10 * this->intermedia->lista[i], posTorreInter.second - 10 - 10 * i, al_map_rgb(this->intermedia->lista[i]*30, 0, 0));
+			al_draw_filled_rectangle(posTorreInter.first + 10 * this->intermedia->lista[i], posTorreInter.second - 10 * i, posTorreInter.first + 20 + 10 * this->intermedia->lista[i], posTorreInter.second - 10 - 10 * i, al_map_rgb(this->intermedia->lista[i] * 30, 0, 0));
+			al_draw_filled_rectangle(posTorreInter.first + 10 * this->intermedia->lista[i], posTorreInter.second - 10 * i, posTorreInter.first - 20 - 10 * this->intermedia->lista[i], posTorreInter.second - 10 - 10 * i, al_map_rgb(this->intermedia->lista[i] * 30, 0, 0));
 		}
 		for (int i = 0; i < this->final->lista.size(); i++) {
-			al_draw_filled_rectangle(posTorreFinal.first + 10 * this->final->lista[i], posTorreFinal.second - 10 * i, posTorreFinal.first + 20 + 10 * this->final->lista[i], posTorreFinal.second - 10 - 10 * i, al_map_rgb(this->final->lista[i]*30, 0, 0));
-			al_draw_filled_rectangle(posTorreFinal.first + 10 * this->final->lista[i], posTorreFinal.second - 10 * i, posTorreFinal.first - 20 - 10 * this->final->lista[i], posTorreFinal.second - 10 - 10 * i, al_map_rgb(this->final->lista[i]*30, 0, 0));
+			al_draw_filled_rectangle(posTorreFinal.first + 10 * this->final->lista[i], posTorreFinal.second - 10 * i, posTorreFinal.first + 20 + 10 * this->final->lista[i], posTorreFinal.second - 10 - 10 * i, al_map_rgb(this->final->lista[i] * 30, 0, 0));
+			al_draw_filled_rectangle(posTorreFinal.first + 10 * this->final->lista[i], posTorreFinal.second - 10 * i, posTorreFinal.first - 20 - 10 * this->final->lista[i], posTorreFinal.second - 10 - 10 * i, al_map_rgb(this->final->lista[i] * 30, 0, 0));
 		}
 
 		switch (select) {
@@ -312,15 +336,21 @@ void Juego::draw(ALLEGRO_DISPLAY* display) {
 			al_draw_filled_triangle(posTorreFinal.first, 162, posTorreFinal.first - 20, 162 - 20, posTorreFinal.first + 20, 162 - 20, al_map_rgb(191, 65, 65));
 			break;
 		}
-
-		if (sigue && pasos < resultadoHanoi.size()) {
-			std::string txt = "mover de " + resultadoHanoi[pasos].first->nombre + " a " + resultadoHanoi[pasos].second->nombre;
-			al_draw_text(fuente, al_map_rgb(0, 0, 0), 20, 20, NULL, txt.c_str());
+		if (this->ayuda) {
+			if (sigue && pasos < resultadoHanoi.size()) {
+				std::string txt = "mover de " + resultadoHanoi[pasos].first->nombre + " a " + resultadoHanoi[pasos].second->nombre;
+				al_draw_text(fuente, al_map_rgb(0, 0, 0), 20, 20, NULL, txt.c_str());
+			}
 		}
 		if (inicial->lista.size() == 0 && intermedia->lista.size() == 0) {
 			al_draw_text(fuente, al_map_rgb(0, 0, 0), 20, 20, NULL, "Ganaste!");
 		}
 		al_draw_text(fuente, al_map_rgb(219, 90, 48), 550, 20, NULL, "salir");
+		break;
+	case 3:
+		al_draw_text(fuente, al_map_rgb(219, 221, 48), 100, 120, NULL, "press S para recibir ayuda");
+		al_draw_text(fuente, al_map_rgb(219, 200, 48), 100, 300, NULL, "press N para no recibir ayuda");
+		dibujar = false;
 		break;
 	}
 

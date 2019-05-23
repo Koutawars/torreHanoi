@@ -23,6 +23,7 @@
 class Juego
 {
 public:
+	bool ayuda=false;
 	Pila* inicial = new Pila("inicial");
 	Pila* intermedia = new Pila("intermedia");
 	Pila* final = new Pila("final");
