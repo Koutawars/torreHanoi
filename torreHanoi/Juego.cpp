@@ -44,10 +44,10 @@ void Juego::loadContent() {
 	case 0:
 		fuente = al_load_font("Aluria.ttf", 26, NULL);
 		menu.push_back("Iniciar");
-		menu.push_back("Detalles");
 		menu.push_back("Salir");
 		break;
 	case 1:
+		fuente = al_load_font("Aluria.ttf", 46, NULL);
 		tablero = al_load_bitmap("tablero.png");
 		break;
 	}
@@ -61,6 +61,9 @@ void Juego::unloadContent() {
 		menu.clear();
 		break;
 	case 1:
+		this->final->lista.clear();
+		this->intermedia->lista.clear();
+		al_destroy_font(fuente);
 		al_destroy_bitmap(tablero);
 		break;
 	}
@@ -81,9 +84,6 @@ void Juego::update(ALLEGRO_EVENT ev, bool* done) {
 						switch (i) {
 						case 0:
 							cambiarPantalla(1);
-							break;
-						case 1:
-							cambiarPantalla(2);
 							break;
 						case 2:
 							*done = true;
@@ -119,6 +119,11 @@ void Juego::update(ALLEGRO_EVENT ev, bool* done) {
 				float mouseX = ev.mouse.x;
 				// 234 de largo
 				// 79 de angosto
+				if (mouseY > 30 && mouseY<70  && mouseX > 550) {
+					cambiarPantalla(0);
+					dibujar = true;
+					break;
+				}
 				if (posTorreInicial.first - 76 < mouseX &&  posTorreInicial.first + 76 > mouseX && posTorreInicial.second > mouseY && posTorreInicial.second  - 234 < mouseY) {
 					dibujar = true;
 					int disco;
@@ -126,15 +131,19 @@ void Juego::update(ALLEGRO_EVENT ev, bool* done) {
 					else {
 						switch (select) {
 						case 1:
-							disco = this->intermedia->desapilar();
-							if (!this->inicial->apilar(disco)) {
-								this->intermedia->apilar(disco);
+							if (this->intermedia->lista.size() > 0) {
+								disco = this->intermedia->desapilar();
+								if (!this->inicial->apilar(disco)) {
+									this->intermedia->apilar(disco);
+								}
 							}
 							break;
 						case 2:
-							disco = this->final->desapilar();
-							if (!this->inicial->apilar(disco)) {
-								this->final->apilar(disco);
+							if (this->final->lista.size() > 0) {
+								disco = this->final->desapilar();
+								if (!this->inicial->apilar(disco)) {
+									this->final->apilar(disco);
+								}
 							}
 							break;
 						}
@@ -148,15 +157,19 @@ void Juego::update(ALLEGRO_EVENT ev, bool* done) {
 					else {
 						switch (select) {
 						case 0:
-							disco = this->inicial->desapilar();
-							if (!this->intermedia->apilar(disco)) {
-								this->inicial->apilar(disco);
+							if (this->inicial->lista.size() > 0) {
+								disco = this->inicial->desapilar();
+								if (!this->intermedia->apilar(disco)) {
+									this->inicial->apilar(disco);
+								}
 							}
 							break;
 						case 2:
-							disco = this->final->desapilar();
-							if (!this->intermedia->apilar(disco)) {
-								this->final->apilar(disco);
+							if (this->final->lista.size() > 0) {
+								disco = this->final->desapilar();
+								if (!this->intermedia->apilar(disco)) {
+									this->final->apilar(disco);
+								}
 							}
 							break;
 						}
@@ -170,15 +183,19 @@ void Juego::update(ALLEGRO_EVENT ev, bool* done) {
 					else {
 						switch (select) {
 						case 0:
-							disco = this->inicial->desapilar();
-							if (!this->final->apilar(disco)) {
-								this->inicial->apilar(disco);
+							if (this->inicial->lista.size() >0) {
+								disco = this->inicial->desapilar();
+								if (!this->final->apilar(disco)) {
+									this->inicial->apilar(disco);
+								}
 							}
 							break;
 						case 1:
-							disco = this->intermedia->desapilar();
-							if (!this->final->apilar(disco)) {
-								this->intermedia->apilar(disco);
+							if (this->intermedia->lista.size() > 0) {
+								disco = this->intermedia->desapilar();
+								if (!this->final->apilar(disco)) {
+									this->intermedia->apilar(disco);
+								}
 							}
 							break;
 						}
@@ -227,6 +244,8 @@ void Juego::draw(ALLEGRO_DISPLAY* display) {
 			al_draw_filled_triangle(posTorreFinal.first, 162, posTorreFinal.first - 20, 162 - 20, posTorreFinal.first + 20, 162 - 20, al_map_rgb(191, 65, 65));
 			break;
 		}
+
+		al_draw_text(fuente, al_map_rgb(219, 90, 48), 550, 20, NULL, "salir");
 		break;
 	}
 
