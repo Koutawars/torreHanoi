@@ -43,6 +43,13 @@ public:
 	float separador; // separador entre texto
 	int select; // Para guardar a quien esta colocando el mouse encima del menu
 
+	std::pair<int, int> posTorreInicial;
+	std::pair<int, int> posTorreInter;
+	std::pair<int, int> posTorreFinal;
+
+
+	ALLEGRO_BITMAP *tablero;
+
 	Juego();
 	~Juego();
 };
