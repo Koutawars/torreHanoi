@@ -36,7 +36,9 @@ public:
 	int pantalla = 0;
 	bool dibujar = true;
 	void cambiarPantalla(int pantalla);
-
+	std::vector <std::string> resultado();
+	void hanoi(int Fichas, Pila* torre1, Pila* torre2, Pila* torre3);
+	std::vector <std::string> resultadohanoi= std::vector<std::string>();
 	ALLEGRO_FONT* fuente;
 	float posXMenu; // posición X del menu
 	float posYMenu; // posición Y del menu

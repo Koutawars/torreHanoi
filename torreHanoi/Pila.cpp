@@ -13,6 +13,7 @@ Pila::Pila(std::string nombre)
 	this->lista = std::vector<int>();
 }
 
+
 bool Pila::apilar(int disco) {
 	if (this->lista.size() == 0) {
 		this->lista.push_back(disco);

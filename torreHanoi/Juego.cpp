@@ -15,6 +15,42 @@ Juego& Juego::GetInstance()
 	static Juego instance;
 	return instance;
 }
+void  Juego::hanoi(int Fichas, Pila* torre1, Pila* torre2, Pila* torre3) {
+	int num_movimientos = 0;
+	if (Fichas == 1) {
+		resultadohanoi.push_back( "mover el dico de " + torre1->nombre + " a " + torre3->nombre );
+		torre3->apilar(torre1->desapilar());
+		num_movimientos++;
+	}
+	else {
+		this->hanoi(Fichas - 1, torre1, torre3, torre2);
+
+		resultadohanoi.push_back("mover el dico de " + torre1->nombre + " a " + torre3->nombre);
+		torre3->apilar(torre1->desapilar());
+		this->hanoi(Fichas - 1, torre2, torre1, torre3);
+	}
+
+}
+
+std::vector <std::string> Juego::resultado()
+{
+	Pila* ptr = new Pila("inicial");
+	ptr->apilar(4);
+	ptr->apilar(3);
+	ptr->apilar(2);
+	ptr->apilar(1);
+	Pila* ptr1 = new Pila("intermedia");
+	Pila* ptr2 = new Pila("final");
+	int tamano = ptr->lista.size();
+	this->hanoi(tamano, ptr, ptr1, ptr2);
+	for (int i = 0; i < resultadohanoi.size(); i++)
+	{
+		std::cout << this->resultadohanoi[i] << std::endl;
+	}
+	return resultadohanoi;
+
+
+}
 
 void Juego::initialize() {
 	switch (pantalla) {
@@ -47,6 +83,7 @@ void Juego::loadContent() {
 		menu.push_back("Salir");
 		break;
 	case 1:
+		resultado();
 		fuente = al_load_font("Aluria.ttf", 46, NULL);
 		tablero = al_load_bitmap("tablero.png");
 		break;
