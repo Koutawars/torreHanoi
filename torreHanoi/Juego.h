@@ -36,9 +36,9 @@ public:
 	int pantalla = 0;
 	bool dibujar = true;
 	void cambiarPantalla(int pantalla);
-	std::vector <std::string> resultado();
+	void resultado();
 	void hanoi(int Fichas, Pila* torre1, Pila* torre2, Pila* torre3);
-	std::vector <std::string> resultadohanoi= std::vector<std::string>();
+	std::vector <std::pair<Pila*, Pila*>> resultadoHanoi;
 	ALLEGRO_FONT* fuente;
 	float posXMenu; // posición X del menu
 	float posYMenu; // posición Y del menu
@@ -49,6 +49,8 @@ public:
 	std::pair<int, int> posTorreInter;
 	std::pair<int, int> posTorreFinal;
 
+	int pasos;
+	bool sigue;
 
 	ALLEGRO_BITMAP *tablero;
 

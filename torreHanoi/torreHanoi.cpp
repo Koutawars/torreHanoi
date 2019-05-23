@@ -99,18 +99,3 @@ int main()
 
 }
 */
-void hanoi(int Fichas, Pila* torre1, Pila* torre2, Pila* torre3) {
-	int num_movimientos = 0;
-	if (Fichas == 1) {
-		std::cout << "mover el dico de " << torre1->nombre << " a " << torre3->nombre << std::endl;
-		torre3->apilar(torre1->desapilar());
-		num_movimientos++;
-	}
-	else {
-		hanoi(Fichas - 1, torre1, torre3, torre2);
-		std::cout << "mover el dico de " << torre1->nombre << " a " << torre3->nombre << std::endl;
-		torre3->apilar(torre1->desapilar());
-		hanoi(Fichas - 1, torre2, torre1, torre3);
-	}
-	
-}

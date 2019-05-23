@@ -18,21 +18,20 @@ Juego& Juego::GetInstance()
 void  Juego::hanoi(int Fichas, Pila* torre1, Pila* torre2, Pila* torre3) {
 	int num_movimientos = 0;
 	if (Fichas == 1) {
-		resultadohanoi.push_back( "mover el dico de " + torre1->nombre + " a " + torre3->nombre );
+		resultadoHanoi.push_back(std::make_pair(torre1, torre3));
 		torre3->apilar(torre1->desapilar());
 		num_movimientos++;
 	}
 	else {
 		this->hanoi(Fichas - 1, torre1, torre3, torre2);
-
-		resultadohanoi.push_back("mover el dico de " + torre1->nombre + " a " + torre3->nombre);
+		resultadoHanoi.push_back(std::make_pair(torre1, torre3));
 		torre3->apilar(torre1->desapilar());
 		this->hanoi(Fichas - 1, torre2, torre1, torre3);
 	}
 
 }
 
-std::vector <std::string> Juego::resultado()
+void Juego::resultado()
 {
 	Pila* ptr = new Pila("inicial");
 	ptr->apilar(4);
@@ -43,12 +42,6 @@ std::vector <std::string> Juego::resultado()
 	Pila* ptr2 = new Pila("final");
 	int tamano = ptr->lista.size();
 	this->hanoi(tamano, ptr, ptr1, ptr2);
-	for (int i = 0; i < resultadohanoi.size(); i++)
-	{
-		std::cout << this->resultadohanoi[i] << std::endl;
-	}
-	return resultadohanoi;
-
 
 }
 
@@ -62,6 +55,11 @@ void Juego::initialize() {
 		select = -1;
 		break;
 	case 1:
+
+
+		resultadoHanoi = std::vector<std::pair<Pila*, Pila*>>();
+		pasos = 0;
+		sigue = true;
 		this->inicial->apilar(3);
 		this->inicial->apilar(2);
 		this->inicial->apilar(1);
@@ -102,6 +100,7 @@ void Juego::unloadContent() {
 		this->intermedia->lista.clear();
 		al_destroy_font(fuente);
 		al_destroy_bitmap(tablero);
+		resultadoHanoi.clear();
 		break;
 	}
 
@@ -173,6 +172,11 @@ void Juego::update(ALLEGRO_EVENT ev, bool* done) {
 								if (!this->inicial->apilar(disco)) {
 									this->intermedia->apilar(disco);
 								}
+								else {
+									if(pasos < resultadoHanoi.size())
+									if (this->resultadoHanoi[pasos].first->nombre != intermedia->nombre || this->resultadoHanoi[pasos].second->nombre != inicial->nombre) sigue = false;
+									if(sigue) pasos++;
+								}
 							}
 							break;
 						case 2:
@@ -180,6 +184,11 @@ void Juego::update(ALLEGRO_EVENT ev, bool* done) {
 								disco = this->final->desapilar();
 								if (!this->inicial->apilar(disco)) {
 									this->final->apilar(disco);
+								}
+								else {
+									if (pasos < resultadoHanoi.size())
+									if (this->resultadoHanoi[pasos].first->nombre != final->nombre || this->resultadoHanoi[pasos].second->nombre != inicial->nombre) sigue = false;
+									if (sigue) pasos++;
 								}
 							}
 							break;
@@ -190,7 +199,9 @@ void Juego::update(ALLEGRO_EVENT ev, bool* done) {
 				if (posTorreInter.first - 76 < mouseX &&  posTorreInter.first + 76 > mouseX && posTorreInter.second > mouseY && posTorreInter.second - 234 < mouseY) {
 					dibujar = true;
 					int disco;
-					if (select == -1 || select == 1) select = 1;
+					if (select == -1 || select == 1) {
+						select = 1;
+					}
 					else {
 						switch (select) {
 						case 0:
@@ -199,6 +210,11 @@ void Juego::update(ALLEGRO_EVENT ev, bool* done) {
 								if (!this->intermedia->apilar(disco)) {
 									this->inicial->apilar(disco);
 								}
+								else {
+									if (pasos < resultadoHanoi.size())
+									if (this->resultadoHanoi[pasos].first->nombre != inicial->nombre || this->resultadoHanoi[pasos].second->nombre != intermedia->nombre) sigue = false;
+									if (sigue) pasos++;
+								}
 							}
 							break;
 						case 2:
@@ -206,6 +222,11 @@ void Juego::update(ALLEGRO_EVENT ev, bool* done) {
 								disco = this->final->desapilar();
 								if (!this->intermedia->apilar(disco)) {
 									this->final->apilar(disco);
+								}
+								else {
+									if (pasos < resultadoHanoi.size())
+									if (this->resultadoHanoi[pasos].first->nombre != final->nombre || this->resultadoHanoi[pasos].second->nombre != intermedia->nombre) sigue = false;
+									if (sigue) pasos++;
 								}
 							}
 							break;
@@ -225,6 +246,11 @@ void Juego::update(ALLEGRO_EVENT ev, bool* done) {
 								if (!this->final->apilar(disco)) {
 									this->inicial->apilar(disco);
 								}
+								else {
+									if (pasos < resultadoHanoi.size())
+									if (this->resultadoHanoi[pasos].first->nombre != inicial->nombre || this->resultadoHanoi[pasos].second->nombre != final->nombre) sigue = false;
+									if (sigue) pasos++;
+								}
 							}
 							break;
 						case 1:
@@ -232,6 +258,11 @@ void Juego::update(ALLEGRO_EVENT ev, bool* done) {
 								disco = this->intermedia->desapilar();
 								if (!this->final->apilar(disco)) {
 									this->intermedia->apilar(disco);
+								}
+								else {
+									if (pasos < resultadoHanoi.size())
+									if (this->resultadoHanoi[pasos].first->nombre != intermedia->nombre || this->resultadoHanoi[pasos].second->nombre != final->nombre) sigue = false;
+									if (sigue) pasos++;
 								}
 							}
 							break;
@@ -282,6 +313,13 @@ void Juego::draw(ALLEGRO_DISPLAY* display) {
 			break;
 		}
 
+		if (sigue && pasos < resultadoHanoi.size()) {
+			std::string txt = "mover de " + resultadoHanoi[pasos].first->nombre + " a " + resultadoHanoi[pasos].second->nombre;
+			al_draw_text(fuente, al_map_rgb(0, 0, 0), 20, 20, NULL, txt.c_str());
+		}
+		if (inicial->lista.size() == 0 && intermedia->lista.size() == 0) {
+			al_draw_text(fuente, al_map_rgb(0, 0, 0), 20, 20, NULL, "Ganaste!");
+		}
 		al_draw_text(fuente, al_map_rgb(219, 90, 48), 550, 20, NULL, "salir");
 		break;
 	}
